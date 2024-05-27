@@ -7,8 +7,8 @@ function setup() {
  colorMode(HSB);
  frameRate(fps);
 
- let numberOfXCircles = 7;
- let numberOfYCircles = 4;
+ let numberOfXCircles = 14;
+ let numberOfYCircles = 10;
  let maxX = width/numberOfXCircles;
  let maxY = height/numberOfYCircles;
  let maxD = (maxX>maxY) ? maxX : maxY;
@@ -45,6 +45,17 @@ class TraceCircle {
     circle(this.x,this.y,this.d)
   }
 
+  displayTrail(length) {
+    for (var i=1; i<=length; i++) {
+      noStroke();
+      let c=color(this.strokeColor,100,100)
+      // TODO: Get alpha trail working;
+      c.setAlpha(50)
+      fill(c);
+      circle(this.x+(cos(this.angle-(this.angle_i*i))*(this.d/2)),this.y+(sin(this.angle-(this.angle_i*i) )*(this.d/2)),this.strokeSize*.9);
+    }
+  }
+
   display() {
     noStroke();
     fill(this.strokeColor,100,100);
@@ -61,6 +72,7 @@ function draw() {
   for (var m=0; m<matrix.length; m++) {
     matrix[m].move();
     matrix[m].displayBackground(10);
+    //matrix[m].displayTrail(15);
     matrix[m].display();
   }
   
