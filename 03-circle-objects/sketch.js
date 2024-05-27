@@ -2,14 +2,21 @@ let fps=60;
 let matrix=[];
 
 function setup() {
- createCanvas(400,400);
+ createCanvas(windowWidth,windowHeight);
  angleMode(DEGREES)
  colorMode(HSB);
  frameRate(fps);
+
+ let numberOfXCircles = 7;
+ let numberOfYCircles = 4;
+ let maxX = width/numberOfXCircles;
+ let maxY = height/numberOfYCircles;
+ let maxD = (maxX>maxY) ? maxX : maxY;
+
  
- for (var y=50; y<height; y+=100) {
-   for (var x=50; x<width; x+=100) {
-     matrix.push(new TraceCircle(x,y,random(30,70),random(5,15),random(0,360),random(5,20)));
+ for (var y=maxY/2; y<height; y+=maxY) {
+   for (var x=maxX/2; x<width; x+=maxX) {
+     matrix.push(new TraceCircle(x,y,random(maxD/8,maxD/2),random(maxD/32,maxD/8),random(0,360),random(5,20)));
    }
   }
 
