@@ -1,12 +1,18 @@
 let fps=60;
-let tc;
+let matrix=[];
 
 function setup() {
  createCanvas(400,400);
  angleMode(DEGREES)
+ colorMode(HSB);
  frameRate(fps);
+ 
+ for (var y=50; y<height; y+=100) {
+   for (var x=50; x<width; x+=100) {
+     matrix.push(new TraceCircle(x,y,random(30,70),random(5,15),random(0,360),random(5,20)));
+   }
+  }
 
- tc = new TraceCircle(100,100,50,10,"red",15);
 }
 
 class TraceCircle {
@@ -16,7 +22,7 @@ class TraceCircle {
     this.d=diameter;
     this.strokeSize=strokeSize;
     this.strokeColor=strokeColor;
-    this.angle=0;
+    this.angle=random(0,360);
     this.rpm=rotationsPerMinute;
     // convert from rpm and fps to the increment angle of each frame
     this.angle_i=360*((this.rpm/60)/fps);
@@ -34,7 +40,7 @@ class TraceCircle {
 
   display() {
     noStroke();
-    fill(this.strokeColor);
+    fill(this.strokeColor,100,100);
     circle(this.x+(cos(this.angle)*(this.d/2)),this.y+(sin(this.angle)*(this.d/2)),this.strokeSize);
   }
 
@@ -43,9 +49,12 @@ class TraceCircle {
 
 
 function draw() {
-  background(128);
+  background("black");
 
-  tc.move();
-  tc.displayBackground(60);
-  tc.display();
+  for (var m=0; m<matrix.length; m++) {
+    matrix[m].move();
+    matrix[m].displayBackground(10);
+    matrix[m].display();
+  }
+  
 }
