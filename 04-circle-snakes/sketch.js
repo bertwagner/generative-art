@@ -19,21 +19,6 @@ function setup() {
   );
 
   
-  let newRadius = 75;
-
-  stroke("green")
-  strokeWeight(3)
-  line(100,100,pc1.x + (cos(pc1.current_angle) * pc1.r) + newRadius,pc1.y + (sin(pc1.current_angle) * pc1.r) + newRadius)
-
-  pc2 = new PartialCircle(
-    // last point of previous circle + new radius
-    x_center=pc1.x + (cos(pc1.current_angle) * pc1.r) + newRadius, 
-    y_center=pc1.y + (sin(pc1.current_angle) * pc1.r) + newRadius, 
-    radius=newRadius,
-    current_angle=45+180,
-    stop_angle=45,
-    direction="CW"
-  );
 
 }
 
@@ -59,6 +44,22 @@ class PartialCircle {
         this.current_angle = this.current_angle - this.angle_i
       } else {
         this.doneDrawing=true;
+        let newRadius = 75;
+
+        //stroke("green")
+        //strokeWeight(3)
+        //line(100,100,pc1.x + (cos(pc1.current_angle) * pc1.r) + newRadius,pc1.y + (sin(pc1.current_angle) * pc1.r) + newRadius)
+
+        pc2 = new PartialCircle(
+          // last point of previous circle + new radius
+          x_center=pc1.x + (cos(pc1.current_angle) * pc1.r) + newRadius-22, // figure out this -22?
+          y_center=pc1.y + (sin(pc1.current_angle) * pc1.r) + newRadius-22, 
+          radius=newRadius,
+          current_angle=45+180,
+          stop_angle=45,
+          direction="CW"
+        );
+      
       }
     } else {
       if (this.current_angle - this.stop_angle < 360) {
