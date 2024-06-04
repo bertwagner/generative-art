@@ -4,12 +4,9 @@ function setup() {
   colorMode(HSB);
   frameRate(fps);
 
-  stroke("red");
-  strokeWeight(5)
-  point(100, 100)
 
 
-  pc1 =  new PartialCircle(
+  pc =  new PartialCircle(
     x_center=100, 
     y_center=100, 
     radius=25,
@@ -31,75 +28,84 @@ class PartialCircle {
     this.current_angle = current_angle;
     this.stop_angle = stop_angle;
     this.rpm = 20;
-    this.doneDrawing = false;
 
     // convert from rpm and fps to the increment angle of each frame
     this.angle_i = 360 * ((this.rpm / 60) / fps);
+
+    //draw the initial center point
+    stroke("red");
+    strokeWeight(4)
+    point(this.x, this.y)
   }
 
   move() {
-    //console.log("current angle:", this.current_angle, "stop angle:", this.stop_angle)
-    if (this.direction == "CCW") {
-      if (this.current_angle > this.stop_angle) {
-        this.current_angle = this.current_angle - this.angle_i
-      } else {
-        this.doneDrawing=true;
-        let newRadius = 75;
+    //console.log("current angle:", this.current_angle, "stop angle:", this.stop_angle, "equal?", parseInt(this.current_angle % 360) == this.stop_angle)
+    
+    //continue drawing the current circle
+    //if (this.current_angle % 360 != this.stop_angle) {
+    if (
+      (this.current_angle % 360 > this.stop_angle && this.direction == "CCW")
+      || (this.current_angle % 360 < this.stop_angle && this.direction == "CW")
+    ) {
+      // set whether angle_i should be added or subtracted
+      let direction_factor = (this.direction == "CCW") ? 1 : -1;
 
-        //stroke("green")
-        //strokeWeight(3)
-        //line(100,100,pc1.x + (cos(pc1.current_angle) * pc1.r) + newRadius,pc1.y + (sin(pc1.current_angle) * pc1.r) + newRadius)
+      // adjust the angle
+      this.current_angle = (this.current_angle <= 0) ? this.current_angle+360 : this.current_angle - (this.angle_i * direction_factor);
+    }
+    //switch to creating a new circle
+    else {
+      i++
+      if (i<maxi){
 
-        pc2 = new PartialCircle(
-          // last point of previous circle + new radius
-          x_center=pc1.x + (cos(pc1.current_angle) * pc1.r) + newRadius-22, // figure out this -22?
-          y_center=pc1.y + (sin(pc1.current_angle) * pc1.r) + newRadius-22, 
-          radius=newRadius,
-          current_angle=45+180,
-          stop_angle=45,
-          direction="CW"
-        );
-      
-      }
-    } else {
-      if (this.current_angle - this.stop_angle < 360) {
-        this.current_angle = this.current_angle + this.angle_i
-      } else {
-        this.doneDrawing=true;
+        if (i == 1) {
+          let newRadius = 50;
+
+          this.x=this.x + newRadius+2+1;
+          this.y=this.y + newRadius+2+1;
+          this.r=newRadius;
+          this.current_angle=this.stop_angle+180;
+          this.stop_angle= 340;
+          this.direction=(this.direction == "CW" ? "CCW" : "CW");
+
+          stroke("red")
+          strokeWeight(4)
+          point(this.x,this.y)
+        }
+        if (i == 2) {
+          let newRadius = 70;
+
+          this.x=this.x + newRadius+2+1;
+          this.y=this.y + newRadius+2+1;
+          this.r=newRadius;
+          this.current_angle=this.stop_angle;
+          this.stop_angle= 100;
+          this.direction=(this.direction == "CW" ? "CCW" : "CW");
+
+          stroke("red")
+          strokeWeight(4)
+          point(this.x,this.y)
+        }
+        
       }
     }
   }
 
   display() {
     stroke("purple");
-    strokeWeight(10)
+    strokeWeight(4)
     point(this.x + (cos(this.current_angle) * this.r), this.y + (sin(this.current_angle) * this.r))
   }
+
     
 }
 
 function draw() {
-
-  if (!pc1.doneDrawing) {
-    pc1.display();
-    pc1.move();
-  } else {
-    console.log('drawing next!')
-    
-  stroke("yellow")
-  strokeWeight(5)
-  point(pc1.x + (cos(pc1.current_angle) * pc1.r),pc1.y + (sin(pc1.current_angle) * pc1.r))
-
-
-    pc2.display();
-    pc2.move();
-  }
+    pc.display();
+    pc.move();
 }
 
 let fps = 60;
-let matrix = [];
-let pc1;
-
-let pc2;
-  
-
+let pc;
+let i = 0;
+let maxi=3;
