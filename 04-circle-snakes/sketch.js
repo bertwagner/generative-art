@@ -59,10 +59,19 @@ class PartialCircle {
       if (i<maxi){
 
         if (i == 1) {
+
           let newRadius = 50;
 
-          this.x=this.x + newRadius+2+1;
-          this.y=this.y + newRadius+2+1;
+          // TODO: this math here is broken. Need to create new green line where new point should be.
+          // draw line from old point to new point
+          stroke("green");
+          strokeWeight(2);
+          line(this.x,this.y, newRadius+(cos(this.current_angle-180) * this.r),newRadius+(sin(this.current_angle-180) * this.r))
+
+          
+          
+          this.x=newRadius+(cos(this.current_angle+180) * this.r)
+          this.y=newRadius+(sin(this.current_angle+180) * this.r)
           this.r=newRadius;
           this.current_angle=this.stop_angle+180;
           this.stop_angle= 340;
@@ -72,20 +81,27 @@ class PartialCircle {
           strokeWeight(4)
           point(this.x,this.y)
         }
-        if (i == 2) {
-          let newRadius = 70;
+        // if (i == 2) {
+        //   //TODO: this current_angle is broken.
+        //   let newRadius = 70;
 
-          this.x=this.x + newRadius+2+1;
-          this.y=this.y + newRadius+2+1;
-          this.r=newRadius;
-          this.current_angle=this.stop_angle;
-          this.stop_angle= 100;
-          this.direction=(this.direction == "CW" ? "CCW" : "CW");
+        //   // draw line from old point to new point
+        //   stroke("green");
+        //   strokeWeight(2);
+        //   line(this.x,this.y, this.x+newRadius+3,this.y+newRadius+3)
 
-          stroke("red")
-          strokeWeight(4)
-          point(this.x,this.y)
-        }
+
+        //   this.x=this.x + newRadius+2+1;
+        //   this.y=this.y + newRadius+2+1;
+        //   this.r=newRadius;
+        //   this.current_angle=this.stop_angle-90;
+        //   this.stop_angle= 100;
+        //   this.direction=(this.direction == "CW" ? "CCW" : "CW");
+
+        //   stroke("red")
+        //   strokeWeight(4)
+        //   point(this.x,this.y)
+        // }
         
       }
     }
@@ -108,4 +124,4 @@ function draw() {
 let fps = 60;
 let pc;
 let i = 0;
-let maxi=3;
+let maxi=2;
